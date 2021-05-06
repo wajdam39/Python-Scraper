@@ -1,0 +1,23 @@
+
+import pandas as pd
+import requests
+
+
+
+head = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36'}
+
+response=requests.get('https://www.reddit.com/r/movies/.json', headers=head)
+
+df = pd.DataFrame()
+
+for post in response.json()['data']['children']:
+#    print(post['data']['title'])
+    df = df.append({
+        'title':post['data']['title'],
+        'up': post ['data']['score']
+    }, ignore_index=True)
+    
+
+print(df)
+
+df.to_csv('RestAPI.csv')
